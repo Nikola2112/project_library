@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>List of People</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>List of People</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Year</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Use Thymeleaf or other template engine to iterate over people -->
+        <tr th:each="person : ${people}">
+            <td th:text="${person.personId}"></td>
+            <td th:text="${person.name}"></td>
+            <td th:text="${person.surname}"></td>
+            <td th:text="${person.year}"></td>
+            <td>
+                <a th:href="@{/people/{id}(id=${person.personId})}">View</a> |
+                <a th:href="@{/people/{id}/edit(id=${person.personId})}">Edit</a> |
+                <a th:href="@{/people/{id}/delete(id=${person.personId})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href="/people/new">Add New Person</a>
+    <!-- Button to redirect to the main page -->
+    <a class="btn btn-secondary" href="/">Go to Main Page</a>
+    <a class="btn btn-secondary" href="/books">Go to Books Page</a>
+</div>
+
+<!-- Bootstrap JS and dependencies (jQuery) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

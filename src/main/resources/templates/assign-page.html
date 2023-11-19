@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Assign Book to Person</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Assign Book to Person</h2>
+
+    <!-- Form to assign a person to a book -->
+    <form action="/books/assign" method="post">
+        <div class="form-group">
+            <label for="bookId">Select Book:</label>
+            <select class="form-control" id="bookId" name="bookId">
+                <!-- Use Thymeleaf to iterate over availableBooks and populate the dropdown -->
+                <option th:each="book : ${availableBooks}" th:value="${book.bookId}" th:text="${book.name + ' by ' + book.author}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="personId">Assign to Person:</label>
+            <select class="form-control" id="personId" name="personId">
+                <!-- Use Thymeleaf to iterate over people and populate the dropdown -->
+                <option th:each="person : ${people}" th:value="${person.personId}" th:text="${person.name + ' ' + person.surname}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Assign</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies (jQuery) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

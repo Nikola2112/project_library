@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Book</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Edit Book</h2>
+    <!-- Your form goes here -->
+    <form th:action="@{/books/{id}/edit(id=${book.bookId})}" method="post">
+        <!-- Form fields for book's information -->
+        <input type="hidden" name="bookId" th:value="${book.bookId}"/>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" th:value="${book.name}" required>
+        </div>
+        <div class="form-group">
+            <label for="author">Author</label>
+            <input type="text" class="form-control" id="author" name="author" th:value="${book.author}" required>
+        </div>
+        <div class="form-group">
+            <label for="year">Year</label>
+            <input type="number" class="form-control" id="year" name="year" th:value="${book.year}" required>
+        </div>
+        <div class="form-group">
+            <label for="borrower">Borrower</label>
+            <select class="form-control" id="borrower" name="borrower">
+                <option value="">Not Assigned</option>
+                <!-- Use Thymeleaf to iterate over people and populate the dropdown -->
+                <option th:each="person : ${people}" th:value="${person.personId}" th:text="${person.name + ' ' + person.surname}" th:selected="${person.personId == book.borrower?.personId}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies (jQuery) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
