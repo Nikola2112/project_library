@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "book")
 @Getter
@@ -19,7 +21,6 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
     private Long bookId;
-
 
     @Column(name = "book_name")
     private String name;
@@ -34,6 +35,14 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "borrower_id")
     private Person borrower;
+
+    @Column(name = "taken_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date takenAt;
+
+    @Transient
+    private boolean expired;
+
 
     @Override
     public String toString() {

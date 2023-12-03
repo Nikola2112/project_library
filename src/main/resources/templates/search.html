@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Book Search</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .book-info {
+            margin-top: 20px;
+        }
+
+        .book-info p {
+            margin-bottom: 5px;
+        }
+
+        .book-owner {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .book-available {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        hr {
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form th:method="POST" th:action="@{/books/search}">
+        <div class="form-group">
+            <label for="query">Enter into the search query:</label>
+            <input type="text" id="query" name="query" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Search!</button>
+    </form>
+
+    <div th:if="${books}">
+        <div th:if="${books.isEmpty()}">
+            <div class="alert alert-info" role="alert">
+                   Book not found
+            </div>
+        </div>
+
+        <div th:each="book : ${books}" class="book-info">
+            <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}"></p>
+
+            <div th:if="${book.getBorrower() != null}" class="book-owner">
+               The book is now at: <span th:text="${book.getBorrower().getSurname()}"></span>
+            </div>
+
+            <div th:if="${book.getBorrower() == null}" class="book-available">
+                Book available
+            </div>
+
+            <hr/>
+        </div>
+    </div>
+</div>
+<div class="mb-3">
+    <a href="/" class="btn btn-primary">Main page</a>
+</div>
+
+
+<!-- Bootstrap JS and dependencies (jQuery) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

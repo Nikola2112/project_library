@@ -14,4 +14,7 @@ public interface BookService {
     Optional<Book> getById(Long bookId);
 
     List<Book> findAvailableBooks();
+    List<Book> findWithPagination(Integer page, Integer booksPerPage, boolean sortByYear);
+    List<Book> findAll(boolean sortByYear);
+    List<Book> searchByName(String query);
 }

@@ -4,5 +4,6 @@ CREATE TABLE book (
                       book_author VARCHAR(255) NOT NULL,
                       book_year_of_publish BIGINT,
                       borrower_id BIGINT,
+                      taken_at TIME,
                       CONSTRAINT fk_borrower FOREIGN KEY (borrower_id) REFERENCES person(person_id) ON DELETE SET NULL
 );

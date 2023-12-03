@@ -4,9 +4,13 @@ import com.example.project_library.entity.Book;
 import com.example.project_library.service.BookService;
 import com.example.project_library.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
@@ -19,11 +23,17 @@ public class BookController {
         this.bookService = bookService;
         this.personService = personService;
     }
+    @GetMapping()
+    public String index(Model model, @RequestParam(value = "page", required = false) Integer page,
+                        @RequestParam(value = "books_per_page", required = false) Integer booksPerPage,
+                        @RequestParam(value = "sort_by_year", required = false) boolean sortByYear) {
 
-    @GetMapping
-    public String listBooks(Model model) {
-        model.addAttribute("books", bookService.listAll());
-        return "main-page-of-books";
+        if (page == null || booksPerPage == null)
+            model.addAttribute("books", bookService.findAll(sortByYear));
+        else
+            model.addAttribute("books", bookService.findWithPagination(page, booksPerPage, sortByYear));
+
+        return "books-index";
     }
 
     @GetMapping("/new")
@@ -72,6 +82,16 @@ public class BookController {
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteBookById(id);
         return "redirect:/books";
+    }
+    @GetMapping("/search")
+    public String searchPage() {
+        return "search";
+    }
+
+    @PostMapping("/search")
+    public String makeSearch(Model model, @RequestParam("query") String query) {
+        model.addAttribute("books", bookService.searchByName(query));
+        return "search";
     }
 }
 

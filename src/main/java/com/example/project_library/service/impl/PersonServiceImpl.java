@@ -1,10 +1,14 @@
 package com.example.project_library.service.impl;
 
+import com.example.project_library.entity.Book;
 import com.example.project_library.entity.Person;
 import com.example.project_library.repo.PersonRepo;
 import com.example.project_library.service.PersonService;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -33,5 +37,25 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Optional<Person> getById(Long personId) {
         return personRepo.findById(personId);
+    }
+
+    public List<Book> getBooksByPersonId(int id) {
+        Optional<Person> person = personRepo.findById((long) id);
+
+        if (person.isPresent()) {
+            Hibernate.initialize(person.get().getBorrowedBooks());
+
+            person.get().getBorrowedBooks().forEach(book -> {
+                long diffInMillies = Math.abs(book.getTakenAt().getTime() - new Date().getTime());
+                //10 суток
+                if (diffInMillies > 864000000)
+                    book.setExpired(true);
+            });
+
+            return person.get().getBorrowedBooks();
+        }
+        else {
+            return Collections.emptyList();
+        }
     }
 }
