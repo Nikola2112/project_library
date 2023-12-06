@@ -6,6 +6,7 @@ import com.example.project_library.repo.PersonRepo;
 import com.example.project_library.service.PersonService;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Date;
@@ -27,6 +28,17 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deletePersonById(Long id) {
         personRepo.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Person updatedPerson(Long id, Person updatedPerson){
+        Person existingPerson = getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid person Id:" + id));
+        existingPerson.setName(updatedPerson.getName());
+        existingPerson.setSurname(updatedPerson.getSurname());
+        existingPerson.setYear(updatedPerson.getYear());
+         return saveNewPerson(existingPerson);
     }
 
     @Override

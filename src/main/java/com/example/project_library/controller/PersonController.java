@@ -1,5 +1,6 @@
 package com.example.project_library.controller;
 
+import com.example.project_library.entity.Book;
 import com.example.project_library.entity.Person;
 import com.example.project_library.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,10 @@ public class PersonController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updatePerson(@PathVariable Long id, @ModelAttribute Person updatedPerson) {
-        Person existingPerson = personService.getById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid person Id:" + id));
-        existingPerson.setName(updatedPerson.getName());
-        existingPerson.setSurname(updatedPerson.getSurname());
-        existingPerson.setYear(updatedPerson.getYear());
-        personService.saveNewPerson(existingPerson);
+    public String updatePerson(@PathVariable Long id, @ModelAttribute Person updatedPerson, Model model) {
+        Person updatedPersonResult = personService.updatedPerson(id, updatedPerson);
+        model.addAttribute("updatedPerson", updatedPersonResult);
+        model.addAttribute("message", "Person updated successfully");
         return "redirect:/people";
     }
 

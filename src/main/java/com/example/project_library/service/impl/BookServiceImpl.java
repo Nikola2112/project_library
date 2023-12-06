@@ -1,16 +1,13 @@
 package com.example.project_library.service.impl;
 
 import com.example.project_library.entity.Book;
-import com.example.project_library.entity.Person;
 import com.example.project_library.repo.BookRepo;
 import com.example.project_library.service.BookService;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -46,6 +43,17 @@ public class BookServiceImpl implements BookService {
             return bookrepo.findAll(Sort.by("year"));
         else
             return bookrepo.findAll();
+    }
+    @Override
+    @Transactional
+    public Book updatedBook(Long id, Book updatedBook) {
+        Book existingBook = getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));
+        existingBook.setName(updatedBook.getName());
+        existingBook.setAuthor(updatedBook.getAuthor());
+        existingBook.setYear(updatedBook.getYear());
+        existingBook.setBorrower(updatedBook.getBorrower());
+        return  saveNewBook(existingBook);
     }
 
     public List<Book> findWithPagination(Integer page, Integer booksPerPage, boolean sortByYear) {

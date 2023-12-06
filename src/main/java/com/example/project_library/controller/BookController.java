@@ -67,17 +67,12 @@ public class BookController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateBook(@PathVariable Long id, @ModelAttribute Book book) {
-        Book existingBook = bookService.getById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));
-        existingBook.setName(book.getName());
-        existingBook.setAuthor(book.getAuthor());
-        existingBook.setYear(book.getYear());
-        existingBook.setBorrower(book.getBorrower());
-        bookService.saveNewBook(existingBook);
+    public String updateBook(@PathVariable Long id, @ModelAttribute Book updatedBook, Model model) {
+        Book updatedBookResult = bookService.updatedBook(id, updatedBook);
+        model.addAttribute("updatedBook", updatedBookResult);
+        model.addAttribute("message", "Book updated successfully");
         return "redirect:/books";
     }
-
     @GetMapping("/{id}/delete")
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteBookById(id);
